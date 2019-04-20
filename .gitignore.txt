@@ -80,6 +80,7 @@ artifacts/
 *.tmp
 *.tmp_proj
 *.log
+*.opendb
 *.vspscc
 *.vssscc
 .builds

@@ -1,16 +1,34 @@
-#include "SDL.h";
+#include "Game.h";
+#include "TextureManager.h"
+
+
+Game* game = nullptr;
 
 int main(int args, char* argcv[]) {
 
-	SDL_Init(SDL_INIT_EVERYTHING);
+	const int FPS = 60;
+	const int frameDelay = 1000 / 60;
 
-	SDL_Window* win = SDL_CreateWindow("Title", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, SDL_WINDOW_SHOWN);
-	SDL_Renderer* renderer = SDL_CreateRenderer(win, -1, 0);
+	Uint32 frameStart;
+	int frameTime;
 
-	SDL_SetRenderDrawColor(renderer, 0, 255, 0, 255);
+	game = new Game();
 
-	SDL_RenderClear(renderer);
-	SDL_RenderPresent(renderer);
-	SDL_Delay(3000);
+	game->init("Egg Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+
+	while (game->running()) {
+
+		frameStart = SDL_GetTicks();
+
+
+		game->handleEvents();
+		game->update();
+		game->render();
+
+		frameTime = SDL_GetTicks() - frameStart;
+		if (frameDelay > frameTime)
+			SDL_Delay(frameDelay - frameTime);
+	}
+
 	return 0;
 }

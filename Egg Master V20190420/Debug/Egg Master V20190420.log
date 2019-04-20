@@ -1,3 +1,15 @@
-﻿  Main.cpp
+﻿  Game.cpp
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(2,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+  GameObject.cpp
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(3,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(2,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+  Main.cpp
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(3,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
 C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Main.cpp(1,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(2,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+  TextureManager.cpp
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(3,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(2,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
+  Generating Code...
+C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(3,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
   Egg Master V20190420.vcxproj -> C:\Users\adrco\source\repos\Egg Master V20190420\Debug\Egg Master V20190420.exe
