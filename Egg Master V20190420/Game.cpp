@@ -1,10 +1,25 @@
 #include "Game.h"
 #include "TextureManager.h"
-#include "GameObject.h"
+#include "Background.h"
+#include "ECS/Components.h"
+#include "Vector2D.h"
+#include "Collision.h"
 
-GameObject* player;
+constexpr auto BOX_WIDTH = 120;
+constexpr auto BOX_HEIGHT = 80;
+
+const int Game::WIDTH = 1366;
+const int Game::HEIGHT = 768;
+
+
+Background* bg;
 
 SDL_Renderer* Game::renderer = nullptr;
+SDL_Event Game::event;
+
+Manager manager;
+auto& player(manager.addEntity());
+auto& egg(manager.addEntity());
 
 /*
 	Game constructor
@@ -51,40 +66,77 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 		}
 		//start the game loop
 		this->isRunning = true;
-	} // ends if sdl is initialized
 
-	player = new GameObject("assets/player.png", 0, 0);
+		bg = new Background();
+
+		bg->load("assets/background.png");
+
+		player.addComponent<TransformComponent>(WIDTH / 2 - 60, 100, 80, 80, 1.5);
+		player.addComponent<SpriteComponent>("assets/player.png");
+		player.addComponent<KeyboardController>();
+		player.addComponent<ColliderComponent>("crate");
+
+		egg.addComponent<TransformComponent>(WIDTH / 2, 100);
+		egg.addComponent<SpriteComponent>("assets/egg.png");
+		egg.addComponent<ColliderComponent>("egg");
+
+	} // ends if sdl is initialized
+	else
+		cout << "SDL not loaded ..." << endl;
 }
 
 /*
 	Handle game events
 */
-void Game::handleEvents(){
+void Game::handleEvents() {
 
 	//create the event object
-	SDL_Event event;
+	
 	SDL_PollEvent(&event);
 
-	switch (event.type) {
+	if (event.type == SDL_QUIT)
+		isRunning = false;
 
-		//when press x
-	case SDL_QUIT:
-	
-		//end game loop
-		this->isRunning = false;
-		break;
-
-	default:
-		break;
+	else {
+		if (event.type == SDL_KEYDOWN) {
+			switch (event.key.keysym.sym) {
+			case SDLK_ESCAPE:
+				isRunning = false;
+				break;
+			default:
+				break;
+			}
+		}
 	}
-}   
-
+}
 
 /*
 	Update game states
 */
 void Game::update() {
-	player->update();
+	manager.refresh();
+	manager.update();
+
+	if (player.getComponent<TransformComponent>().position.x > Game::WIDTH - BOX_WIDTH)
+		player.getComponent<TransformComponent>().position.x = Game::WIDTH - BOX_WIDTH;
+
+	else if (player.getComponent<TransformComponent>().position.x < 0)
+		player.getComponent<TransformComponent>().position.x = 0;
+
+	if (player.getComponent<TransformComponent>().position.y > Game::HEIGHT - BOX_HEIGHT - 30)
+		player.getComponent<TransformComponent>().position.y = Game::HEIGHT - BOX_HEIGHT - 30;
+
+	else if (player.getComponent<TransformComponent>().position.y < 0)
+		player.getComponent<TransformComponent>().position.y = 0;
+
+	if (Collision::AABB(player.getComponent<ColliderComponent>().collider,
+		egg.getComponent<ColliderComponent>().collider)) {
+		egg.getComponent<SpriteComponent>().setTexture("assets/rock.png");
+		cout << "The egg has been collected ..." << endl;
+	}
+	else {
+		egg.getComponent<SpriteComponent>().setTexture("assets/egg.png");
+	}
 }
 
 void Game::render() {
@@ -92,8 +144,8 @@ void Game::render() {
 	SDL_RenderClear(this->renderer);
 
 	//this is where we add stuff to render
-	player->render();
-
+	bg->draw();
+	manager.draw();
 	SDL_RenderPresent(renderer);
 }
 

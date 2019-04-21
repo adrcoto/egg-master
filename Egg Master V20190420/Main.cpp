@@ -14,12 +14,11 @@ int main(int args, char* argcv[]) {
 
 	game = new Game();
 
-	game->init("Egg Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, 800, 600, false);
+	game->init("Egg Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Game::WIDTH, Game::HEIGHT, true);
 
 	while (game->running()) {
 
 		frameStart = SDL_GetTicks();
-
 
 		game->handleEvents();
 		game->update();
