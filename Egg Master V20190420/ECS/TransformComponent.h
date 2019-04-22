@@ -1,8 +1,12 @@
 #pragma once
 #include "Components.h"
 #include "../Vector2D.h"
+#include "../Game.h"
 
 class TransformComponent : public Component {
+	int prevTime = 0;
+	int curentTime = 0;
+	float deltaTime = 0;
 public:
 
 	Vector2D position;
@@ -12,15 +16,14 @@ public:
 	int width = 36;
 	float scale = 1.0;
 
-	int speed = 5;
+	int speed = 1;
 	
 	TransformComponent() {
-		position.x = position.y = 0.0f;
+		position.zero();
 	}
 
 	TransformComponent(float scale) {
-		position.x = 0.0f;
-		position.y = 0.0f;
+		position.zero();
 		this->scale = scale;
 	}
 
@@ -39,13 +42,17 @@ public:
 
 	
 	void init() override {
-		velocity.x = 0.0f;
-		velocity.y = 0.0f;
+		velocity.zero();
 	}
 
 	void update() override {
-		position.x += velocity.x * speed;
-		position.y += velocity.y * speed;
+		
+		prevTime = curentTime;
+		curentTime = SDL_GetTicks();
+		deltaTime = (curentTime - prevTime) / 1000.0f;
+
+		position.x += velocity.x * speed * deltaTime;
+		position.y += velocity.y * speed * deltaTime; 
 	}
 
 };

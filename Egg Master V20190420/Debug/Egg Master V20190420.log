@@ -1,21 +1,36 @@
 ﻿  Game.cpp
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(2,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.h(3,10): warning C4067:  unexpected tokens following preprocessor directive - expected a newline
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\SpriteComponent.h(42,29): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ColliderComponent.h(34,33): warning C4244:  '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:  'argument': conversion from '_Ty' to 'float', possible loss of data
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         with
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         [
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:             _Ty=double
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         ]
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.cpp(74): message :  see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,double>(int &&,int &&,int &&,int &&,double &&)' being compiled
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.cpp(74): message :         with
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.cpp(74): message :         [
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.cpp(74): message :             T=TransformComponent
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\Game.cpp(74): message :         ]
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:  'argument': conversion from '_Ty' to 'float', possible loss of data
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         with
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         [
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:             _Ty=int
-C:\Users\adrco\source\repos\Egg Master V20190420\Egg Master V20190420\ECS\ECS.h(70,28): warning C4244:         ]
-  Egg Master V20190420.vcxproj -> C:\Users\adrco\source\repos\Egg Master V20190420\Debug\Egg Master V20190420.exe
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(73): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ColliderComponent.h(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(71): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(164): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(167): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(243): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(248): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(257): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(268): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(70): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=int
+          ]
+  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(110): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(70): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
+          with
+          [
+              _Ty=double
+          ]
+  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(116): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,double,float,int,int,float>(double &&,float &&,int &&,int &&,float &&)' being compiled
+          with
+          [
+              T=TransformComponent
+          ]
+  Egg Master V20190420.vcxproj -> C:\Users\Coto\source\repos\egg-master\Debug\Egg Master V20190420.exe

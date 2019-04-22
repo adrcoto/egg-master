@@ -33,5 +33,10 @@ public:
 	Vector2D& operator/=(const Vector2D&);
 
 	friend ostream& operator<<(ostream&, const Vector2D&);
+
+	Vector2D& operator+(const int&);
+	Vector2D& operator*(const int&);
+	
+	Vector2D& zero();
 };
 

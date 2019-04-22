@@ -2,6 +2,7 @@
 #include "Components.h"
 #include "SDL.h"
 #include "../TextureManager.h"
+#include "../AssetManager.h"
 
 
 class SpriteComponent : public Component{
@@ -15,16 +16,15 @@ public:
 	SpriteComponent() = default;
 
 	~SpriteComponent() {
-		SDL_DestroyTexture(texture);
-	}
-
-	SpriteComponent(const char* path) {
-		setTexture(path);
 	}
 
 
-	void setTexture(const char* path) {
-		texture = TextureManager::loadTexture(path);
+	SpriteComponent(string id) {
+		setTexture(id);
+	}
+
+	void setTexture(string id) {
+		texture = Game::assets->getTexture(id);
 	}
 
 	void init() override {
