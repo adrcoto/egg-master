@@ -15,12 +15,12 @@ void AssetManager::addTexture(string id, const char* path) {
 	textures.emplace(id, TextureManager::loadTexture(path));
 }
 
-void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int range, int speed, string id) {
+void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int speed, string id) {
 	auto& projectile(manager->addEntity());
 	projectile.addComponent<TransformComponent>(pos.x, pos.y);
 	projectile.addComponent<SpriteComponent>(id);
-	projectile.addComponent<ProjectileComponent>(range, speed, vel);
 	projectile.addComponent<ColliderComponent>(id);
+	projectile.addComponent<ProjectileComponent>(speed, vel);
 }
 
 SDL_Texture* AssetManager::getTexture(string id) {

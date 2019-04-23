@@ -1,24 +1,23 @@
 ﻿  Game.cpp
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(3): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(42): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(40): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(73): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ColliderComponent.h(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(60): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(71): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(164): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(167): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(243): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(248): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(257): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(268): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(45): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(72): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(128): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(131): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(229): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(235): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(243): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(254): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(70): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
               _Ty=int
           ]
-  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(110): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
+  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(118): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,int,int,int,int,int>(int &&,int &&,int &&,int &&,int &&)' being compiled
           with
           [
               T=TransformComponent
@@ -28,7 +27,7 @@ C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(70): warnin
           [
               _Ty=double
           ]
-  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(116): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,double,float,int,int,float>(double &&,float &&,int &&,int &&,float &&)' being compiled
+  C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(133): note: see reference to function template instantiation 'T &Entity::addComponent<TransformComponent,double,float,int,int,float>(double &&,float &&,int &&,int &&,float &&)' being compiled
           with
           [
               T=TransformComponent

@@ -6,15 +6,14 @@
 #include "Collision.h"
 #include "AssetManager.h"
 #include <time.h>
-
 #include "PlayerStats.h"
+
 
 
 const int Game::BOX_WIDTH = 120;
 const int Game::BOX_HEIGHT = 80;
 
 bool Game::isRunning = false;
-
 
 
 const int Game::WIDTH = 1366;
@@ -40,15 +39,12 @@ auto& eggsIcon(manager.addEntity());
 auto& droppedIcon(manager.addEntity());
 
 auto& player(manager.addEntity());
-auto& egg(manager.addEntity());
-auto& rock(manager.addEntity());
 
-auto& aaa(manager.addEntity());
-auto& bbb(manager.addEntity());
-
+auto& collectedEggs(manager.addEntity());
+auto& brokenEggs(manager.addEntity());
 auto& lives(manager.addEntity());
 auto& anouncer(manager.addEntity());
-auto& tim(manager.addEntity());
+
 
 /*
 	Game constructor
@@ -56,6 +52,11 @@ auto& tim(manager.addEntity());
 Game::Game(){
 	this->window = nullptr;
 	this->renderer = nullptr;
+	eggs = 50;
+}
+
+Game::Game(int nrEggs) {
+	eggs = nrEggs;
 }
 
 
@@ -92,6 +93,7 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 			cout << "Renderer created ..." << endl;
 			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		}
+
 		//start the game loop
 		Game::isRunning = true;
 
@@ -99,8 +101,14 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 
 		bg->load("assets/background.png");
 
+
 		assets->addTexture("eggIcon", "assets/collectedEggs.png");
 		assets->addTexture("droppedIcon", "assets/brokenEggs.png");
+
+		assets->addTexture("lives0", "assets/lives0.png");
+		assets->addTexture("lives", "assets/lives.png");
+		assets->addTexture("lives1", "assets/lives1.png");
+		assets->addTexture("lives2", "assets/lives2.png");
 
 		assets->addTexture("player", "assets/player.png");
 		assets->addTexture("egg", "assets/egg.png");
@@ -113,32 +121,20 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 		droppedIcon.addComponent<TransformComponent>(10, 70, 58, 39, 1);
 		droppedIcon.addComponent<SpriteComponent>("droppedIcon");
 
+		lives.addComponent<TransformComponent>(10, 97, 108, 86, 1);
+		lives.addComponent<SpriteComponent>("lives2");
+
+		for (int i = 0; i < 65; i++)
+			assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg");
+
+		for (int i = 0; i < 15; i++)
+			assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock");
+
 		player.addComponent<TransformComponent>(WIDTH / 2.0 - 60.0f, 100.0f, 80, 80, 1.5f);
 		player.addComponent<SpriteComponent>("player");
 		player.addComponent<KeyboardController>();
 		player.addComponent<ColliderComponent>("crate");
 
-
-		egg.addComponent<TransformComponent>(WIDTH / 2, 450);
-		//egg.addComponent<SpriteComponent>("assets/egg.png");
-		egg.addComponent<SpriteComponent>("egg");
-		egg.addComponent<ColliderComponent>("egg");
-
-		rock.addComponent<TransformComponent>(WIDTH / 2 + 100, 450);
-		//	rock.addComponent<SpriteComponent>("assets/rock.png");
-		rock.addComponent<SpriteComponent>("rock");
-		rock.addComponent<ColliderComponent>("rock");
-
-
-		/*assets->CreateProjectile(Vector2D(WIDTH - 36, 100), Vector2D(-1, 0), 0, 1, "egg");
-		assets->CreateProjectile(Vector2D(WIDTH - 36, 200), Vector2D(-1, 0), 0, 2, "egg");
-		assets->CreateProjectile(Vector2D(WIDTH - 36, 300), Vector2D(-1, 0), 0, 3, "egg");
-		assets->CreateProjectile(Vector2D(WIDTH - 36, 400), Vector2D(-1, 0), 0, 2, "egg");*/
-
-		
-		
-		
-	
 	} // ends if sdl is initialized
 	else
 		cout << "SDL not loaded ..." << endl;
@@ -146,25 +142,20 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 	if (TTF_Init() == -1)
 		cout << "Something wrong with font";
 
-	assets->addFont("consolas", "assets/consola.ttf", 35);
-	assets->addFont("consola", "assets/consolas.ttf", 25);
+
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		cout << "Something wrong with sound";
+
+
+	assets->addFont("consolas", "assets/font/consola.ttf", 35);
+	assets->addFont("consola", "assets/font/consolas.ttf", 35);
 	
 	SDL_Color white = { 255, 255, 255 };
 	SDL_Color black = { 0, 0, 0 };
 
-
-	aaa.addComponent<UILabel>(85, 25, "", "consola", black);
-	bbb.addComponent<UILabel>(85, 75, "", "consola", black);
-	lives.addComponent<UILabel>(85, 135, "", "consola", black);
-	tim.addComponent<UILabel>(85, 195, "", "consola", black);
-
+	collectedEggs.addComponent<UILabel>(85, 25, "", "consola", black);
+	brokenEggs.addComponent<UILabel>(85, 75, "", "consola", black);
 	anouncer.addComponent<UILabel>(WIDTH / 2 - 80, HEIGHT / 2 - 200, "", "consolas", black);
-
-	for (int i = 0; i < 25; i++)
-		assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), 0, rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg");
-
-	for (int i = 0;  i < 15; i++)
-		assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), 0, rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock");
 }
 
 /*
@@ -196,29 +187,20 @@ void Game::handleEvents() {
 	Update game states
 */
 void Game::update() {
+
 	manager.refresh();
 	manager.update();
 
-
 	ss << PlayerStats::eggsCollected();
-	aaa.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
+	collectedEggs.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
 	ss.str(string());
 
 	ss << PlayerStats::eggsBroken();
-	bbb.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-	ss.str(string());
-
-
-	ss << PlayerStats::Lives();
-	lives.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-	ss.str(string());
-
-	ss << SDL_GetTicks();
-	tim.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
+	brokenEggs.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
 	ss.str(string());
 
 	if (PlayerStats::gameOver) {
-		ss << "You Lose!";
+		ss << "You Lost!";
 		anouncer.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
 		ss.str(string());
 	}
@@ -229,48 +211,51 @@ void Game::update() {
 		ss.str(string());
 	}
 
-
-
-
 	int width = rand() % (Game::WIDTH - 35);
-	int height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
+	int height = rand() % (Game::maxHeight + 1 - (Game::minHeight - 500)) + Game::minHeight;
 
 	for (auto cc : colliders)
 		if (cc->tag != "crate")
 			if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
-				if (cc->tag == "rock") {
+				if (cc->tag == "rock") {		
+					Mix_PlayChannel(-1, Mix_LoadWAV("assets/sound/nope.wav"), 0);
 					PlayerStats::rockHit();
+					if (PlayerStats::Lives() == 2)
+						lives.getComponent<SpriteComponent>().setTexture("lives1");
+					else if (PlayerStats::Lives() == 1)
+						lives.getComponent<SpriteComponent>().setTexture("lives");
+					else
+						lives.getComponent<SpriteComponent>().setTexture("lives0");
 					cc->transform->position = Vector2D(width, height);
 				}
 
 				else if (cc->tag == "egg") {
-					PlayerStats::eggCollected();
+					Mix_PlayChannel(-1, Mix_LoadWAV("assets/sound/collect.wav"), 0);
+					PlayerStats::eggCollected();			
 					cc->transform->position = Vector2D(width, height);
 				}
 
 
-
-	if (PlayerStats::eggsCollected() >= 10) {
+	if (PlayerStats::eggsCollected() >= 500) {
 		//write congrats
 		if (!PlayerStats::win)
-			timeWin = SDL_GetTicks() + 3000;
-		if (SDL_GetTicks() > timeWin)
+			timeAnouncer = SDL_GetTicks() + 3000;
+		if (SDL_GetTicks() > timeAnouncer)
 			isRunning = false;
 
 		PlayerStats::win = true;
 	}
 
 
-	if (!PlayerStats::hasLives() || PlayerStats::eggsBroken() >= 1000) {
+	if (!PlayerStats::hasLives() || PlayerStats::eggsBroken() >= 100) {
 		//write game over
 		if (!PlayerStats::gameOver)
-			timeWin = SDL_GetTicks() + 3000;
-		if (SDL_GetTicks() > timeWin)
+			timeAnouncer = SDL_GetTicks() + 3000;
+		if (SDL_GetTicks() > timeAnouncer)
 			isRunning = false;
 
 		PlayerStats::gameOver = true;
 	}
-
 }
 
 
@@ -278,8 +263,6 @@ void Game::update() {
 void Game::render() {
 
 	SDL_RenderClear(this->renderer);
-
-	//this is where we add stuff to render
 	bg->draw();
 	manager.draw();
 	SDL_RenderPresent(renderer);

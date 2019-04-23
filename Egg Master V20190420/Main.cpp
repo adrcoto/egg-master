@@ -8,13 +8,13 @@ Game* game = nullptr;
 
 int main(int args, char* argcv[]) {
 
-	const int FPS = 144;
-	const int frameDelay = 1000 / 144;
+	const int FPS = 60;
+	const int frameDelay = 1000 / FPS;
 
 	Uint32 frameStart;
 	int frameTime;
 
-	game = new Game();
+	game = new Game(66);
 
 	game->init("Egg Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Game::WIDTH, Game::HEIGHT, false);
 

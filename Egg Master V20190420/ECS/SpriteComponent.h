@@ -10,8 +10,6 @@ private:
 	TransformComponent* transform;
 	SDL_Texture* texture;
 	SDL_Rect src, dest;
-
-
 public:
 	SpriteComponent() = default;
 
