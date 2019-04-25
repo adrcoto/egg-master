@@ -19,11 +19,11 @@ bool Game::isRunning = false;
 const int Game::WIDTH = 1366;
 const int Game::HEIGHT = 768;
 
-const int Game::minSpeed = 80;
-const int Game::maxSpeed = 170;
+const int Game::minSpeed = 50;
+const int Game::maxSpeed = 150;
 
-const int Game::minHeight = -2500;
-const int Game::maxHeight = -700;
+const int Game::minHeight = -4500;
+const int Game::maxHeight = -800;
 
 
 
@@ -219,20 +219,25 @@ void Game::update() {
 			if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
 				if (cc->tag == "rock") {		
 					Mix_PlayChannel(-1, Mix_LoadWAV("assets/sound/nope.wav"), 0);
-					PlayerStats::rockHit();
-					if (PlayerStats::Lives() == 2)
-						lives.getComponent<SpriteComponent>().setTexture("lives1");
-					else if (PlayerStats::Lives() == 1)
-						lives.getComponent<SpriteComponent>().setTexture("lives");
-					else
-						lives.getComponent<SpriteComponent>().setTexture("lives0");
-					cc->transform->position = Vector2D(width, height);
+				
+						PlayerStats::rockHit();
+						if (PlayerStats::Lives() == 2)
+							lives.getComponent<SpriteComponent>().setTexture("lives1");
+						else if (PlayerStats::Lives() == 1)
+							lives.getComponent<SpriteComponent>().setTexture("lives");
+						else if (PlayerStats::Lives() == 3)
+							lives.getComponent<SpriteComponent>().setTexture("lives2");
+						else 
+							lives.getComponent<SpriteComponent>().setTexture("lives0");
+
+						cc->transform->position = Vector2D(width, height);
 				}
 
 				else if (cc->tag == "egg") {
 					Mix_PlayChannel(-1, Mix_LoadWAV("assets/sound/collect.wav"), 0);
-					PlayerStats::eggCollected();			
 					cc->transform->position = Vector2D(width, height);
+					if (!PlayerStats::gameOver)
+					PlayerStats::eggCollected();					
 				}
 
 
@@ -246,6 +251,17 @@ void Game::update() {
 		PlayerStats::win = true;
 	}
 
+	if (PlayerStats::eggsCollected() >= 10) {
+		PlayerStats::healUp();
+
+		if (PlayerStats::Lives() == 2)
+			lives.getComponent<SpriteComponent>().setTexture("lives1");
+
+		else if (PlayerStats::Lives() == 3)
+			lives.getComponent<SpriteComponent>().setTexture("lives2");
+	}
+
+	cout << PlayerStats::Lives() << endl;
 
 	if (!PlayerStats::hasLives() || PlayerStats::eggsBroken() >= 100) {
 		//write game over

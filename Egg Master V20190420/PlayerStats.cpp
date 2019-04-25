@@ -16,6 +16,11 @@ PlayerStats::PlayerStats(){}
 PlayerStats::~PlayerStats(){}
 
 
+void PlayerStats::healUp() {
+	if (lives < 3)
+		lives += 1;
+}
+
 bool PlayerStats::hasLives() {
 	return (lives > 0);
 }

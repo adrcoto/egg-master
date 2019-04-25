@@ -10,6 +10,7 @@ public:
 	PlayerStats();
 	~PlayerStats();
 
+	static void healUp();
 	static bool hasLives();
 	static void rockHit();
 	static int Lives();

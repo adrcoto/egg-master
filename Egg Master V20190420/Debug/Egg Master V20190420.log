@@ -8,10 +8,10 @@ C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileCompone
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(72): warning C4244: 'argument': conversion from 'time_t' to 'unsigned int', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(128): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(131): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(229): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(235): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(243): warning C4018: '>': signed/unsigned mismatch
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(254): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(233): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(238): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(248): warning C4018: '>': signed/unsigned mismatch
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.cpp(270): warning C4018: '>': signed/unsigned mismatch
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(70): warning C4244: 'argument': conversion from '_Ty' to 'float', possible loss of data
           with
           [
