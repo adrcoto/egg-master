@@ -5,7 +5,7 @@
 #include "Vector2D.h"
 #include "ECS/ECS.h"
 #include "SDL_ttf.h"
-
+#include "SDL_mixer.h"
 
 class AssetManager {
 private:
@@ -21,11 +21,14 @@ public:
 	AssetManager(Manager* man);
 	~AssetManager();
 
-	void CreateProjectile(Vector2D, Vector2D, int, string);
+	void CreateProjectile(Vector2D, Vector2D, int, string, bool);
 
 	void addTexture(string, const char*);
 	SDL_Texture* getTexture(string);
 
 	void addFont(string, string, int);
 	TTF_Font* getFont(string);
+
+	void addFX(string id, const std::string&);
+	Mix_Chunk* getFX(string);
 };

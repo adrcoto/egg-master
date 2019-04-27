@@ -1,6 +1,7 @@
 #include "Game.h";
 #include "TextureManager.h"
 
+
 Game* game = nullptr;
 
 //timpi per frame
@@ -14,7 +15,7 @@ int main(int args, char* argcv[]) {
 	Uint32 frameStart;
 	int frameTime;
 
-	game = new Game(66);
+	game = new Game(60);
 
 	game->init("Egg Master", SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, Game::WIDTH, Game::HEIGHT, false);
 
@@ -30,5 +31,7 @@ int main(int args, char* argcv[]) {
 			SDL_Delay(frameDelay - frameTime);
 	}
 
+	game->clean();
+	cin.get();
 	return 0;
 }

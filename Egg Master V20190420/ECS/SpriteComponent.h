@@ -10,10 +10,14 @@ private:
 	TransformComponent* transform;
 	SDL_Texture* texture;
 	SDL_Rect src, dest;
+
+	string currentText;
+	string prevText;
 public:
 	SpriteComponent() = default;
 
 	~SpriteComponent() {
+		SDL_DestroyTexture(texture);
 	}
 
 
@@ -21,8 +25,16 @@ public:
 		setTexture(id);
 	}
 
-	void setTexture(string id) {
-		texture = Game::assets->getTexture(id);
+	void setTexture(string id) {	
+		if (textChanged(id)) 
+			texture = Game::assets->getTexture(id);
+	}
+
+	bool textChanged(string text) {
+		prevText = currentText;
+		currentText = text;
+
+		return (prevText != currentText);
 	}
 
 	void init() override {

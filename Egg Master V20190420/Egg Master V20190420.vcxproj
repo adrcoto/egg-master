@@ -76,11 +76,11 @@
       <Optimization>Disabled</Optimization>
       <SDLCheck>true</SDLCheck>
       <ConformanceMode>true</ConformanceMode>
-      <AdditionalIncludeDirectories>C:\Users\Coto\source\repos\dependinces\SDL2_ttf-2.0.15\include;C:\Users\Coto\source\repos\dependinces\SDL2-2.0.9\include;C:\Users\Coto\source\repos\dependinces\SDL2_image-2.0.4\include;C:\Users\Coto\source\repos\dependinces\SDL2_mixer-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>C:\Users\adrco\source\repos\dependinces\SDL2_ttf-2.0.15\include;C:\Users\adrco\source\repos\dependinces\SDL2-2.0.9\include;C:\Users\adrco\source\repos\dependinces\SDL2_image-2.0.4\include;C:\Users\adrco\source\repos\dependinces\SDL2_mixer-2.0.4\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
-      <AdditionalLibraryDirectories>C:\Users\Coto\source\repos\dependinces\SDL2-2.0.9\lib\x86;C:\Users\Coto\source\repos\dependinces\SDL2_ttf-2.0.15\lib\x86;C:\Users\Coto\source\repos\dependinces\SDL2_image-2.0.4\lib\x86;C:\Users\Coto\source\repos\dependinces\SDL2_mixer-2.0.4\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>C:\Users\adrco\source\repos\dependinces\SDL2-2.0.9\lib\x86;C:\Users\adrco\source\repos\dependinces\SDL2_ttf-2.0.15\lib\x86;C:\Users\adrco\source\repos\dependinces\SDL2_image-2.0.4\lib\x86;C:\Users\adrco\source\repos\dependinces\SDL2_mixer-2.0.4\lib\x86;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
       <AdditionalDependencies>SDL2.lib;SDL2main.lib;SDL2_Image.lib;SDL2_mixer.lib;SDL2_ttf.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>

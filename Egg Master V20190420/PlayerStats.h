@@ -1,25 +1,21 @@
 #pragma once
+#include <map>
+#include <string>
+
 class PlayerStats {
 private:
 	static int lives;
-	static int lvl;
 	static int collectedEggs;
 	static int brokenEggs;
-	static bool lvledUp;
 public:
 	PlayerStats();
 	~PlayerStats();
 
-	static void healUp();
-	static bool hasLives();
-	static void rockHit();
 	static int Lives();
+	static bool hasLives();
+	static void healUp();
+	static void rockHit();
 
-	static void levelUp();
-	static int level();
-	static bool hasLeveledUp();
-	static void leveledUp(bool);
-	
 	static void eggCollected();
 	static int eggsCollected();
 
@@ -28,5 +24,12 @@ public:
 
 	static bool win;
 	static bool gameOver;
+
+	static void cleanse(float);
+
+	static bool hasHealed;
+	static bool heal;
+	static bool canHeal();
+
 };
 
