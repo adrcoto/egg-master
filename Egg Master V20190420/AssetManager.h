@@ -10,7 +10,6 @@
 class AssetManager {
 private:
 	Manager* manager;
-
 	map<string, SDL_Texture*> textures;
 	map<string, TTF_Font*> fonts;
 

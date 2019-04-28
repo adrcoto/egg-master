@@ -2,11 +2,10 @@
 #include "Components.h"
 #include "../Vector2D.h"
 #include "../Game.h"
+#include "../Timer.h"
+
 
 class TransformComponent : public Component {
-	int prevTime = 0;
-	int curentTime = 0;
-	float deltaTime = 0;
 public:
 
 	Vector2D position;
@@ -46,13 +45,8 @@ public:
 	}
 
 	void update() override {
-		
-		prevTime = curentTime;
-		curentTime = SDL_GetTicks();
-		deltaTime = (curentTime - prevTime) / 1000.0f;
-
-		position.x += velocity.x * speed * deltaTime;
-		position.y += velocity.y * speed * deltaTime; 
+		position.x += velocity.x * speed * Timer::deltaTime();
+		position.y += velocity.y * speed * Timer::deltaTime();
 	}
 
 };

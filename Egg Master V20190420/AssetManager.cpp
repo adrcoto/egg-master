@@ -24,6 +24,7 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int speed, strin
 		projectile.addComponent<CollectableComponment>(speed, vel);
 	else
 		projectile.addComponent<ProjectileComponent>(speed, vel);
+
 }
 
 

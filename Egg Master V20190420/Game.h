@@ -5,6 +5,8 @@
 #include <iostream>
 #include <vector>
 #include <sstream>
+#include "Frame.h"
+#include <thread>
 
 using namespace std;
 
@@ -13,32 +15,59 @@ class ColliderComponent;
 
 class Game {
 private:
-
+	thread imagesThread, soundThread, hudThread;
 	SDL_Window* window;
 
 	//number of eggs/rocks
 	int eggNumber;
 	int rockNumber;
+
 	//time for showing messages
 	int timeAnouncer;
 
 	//stream for score
 	stringstream ss;
 
+	int randWidth = 0;
+	int randHeight = 0;
+
 	int cleanseStage = 0, healthStage = 0;
 	int* cleanseStages, *healthStages;
 	int* checkedCleanseStages, * checkedHealthStages;
+	
+	
 
 	int* initStages(int, int);
 	int* initArray(int);
-
 	void init(int, int);
 
-	void initAssets();
-	void initLabels();
+	void loadEggs();
+	void loadRocks();
+
+	void updateHud(int, int, int, string, stringstream&);
+	void checkForCollision();
+	void gameOver(int, int, int);
+
+	void joinThread(thread&);
 public:
+	void initImages();
+	void initHud();
+	void initSound();
+
+	static SDL_Renderer* renderer;
+	static SDL_Event event;
+	static vector<ColliderComponent*> colliders;
+	static AssetManager* assets;
+
+	
+
+
+
+	static bool cap;
+
 	//window dimension
 	static const int WIDTH, HEIGHT;
+
 	//player crate dimension
 	static const int BOX_WIDTH, BOX_HEIGHT;
 
@@ -49,11 +78,6 @@ public:
 
 	//min-max spawn point for projectiles
 	static const int minHeight, maxHeight;
-
-	static SDL_Renderer* renderer;
-	static SDL_Event event;
-	static vector<ColliderComponent*> colliders;
-	static AssetManager* assets;
 
 	Game();
 	Game(int);
@@ -66,7 +90,6 @@ public:
 	void render();
 	void clean();
 
-	void gameOver();
 	bool running();
 };
 

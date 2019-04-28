@@ -13,7 +13,7 @@ public:
 
 	static int Lives();
 	static bool hasLives();
-	static void healUp();
+	static void heal();
 	static void rockHit();
 
 	static void eggCollected();
@@ -26,10 +26,6 @@ public:
 	static bool gameOver;
 
 	static void cleanse(float);
-
-	static bool hasHealed;
-	static bool heal;
 	static bool canHeal();
-
 };
 

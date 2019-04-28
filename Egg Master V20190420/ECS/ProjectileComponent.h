@@ -25,24 +25,11 @@ public:
 
 
 	void update() override {
-
-		//	speed = rand() % (Game::maxSpeed - Game::minSpeed + 1);
-		//	width = rand() % (Game::WIDTH - 35);
-		//	height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
-
-		//	if (transform->position.y >= Game::HEIGHT - 55) {
-		//		Mix_PlayChannel(-1, Mix_LoadWAV("assets/sound/drop.wav"), 0);	
-		//		PlayerStats::eggDropped();
-		//		entity->getComponent<ProjectileComponent>().speed = speed;
-		//		entity->getComponent<ProjectileComponent>().transform->position = Vector2D(width, height);
-		//	}
-		//}
-
-		speed = rand() % (Game::maxSpeed - Game::minSpeed + 1);
-		width = rand() % (Game::WIDTH - 35);
-		height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
-
 		if (transform->position.y >= Game::HEIGHT - 55) {
+			speed = rand() % (Game::maxSpeed - Game::minSpeed + 1);
+			width = rand() % (Game::WIDTH - 35);
+			height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
+
 			entity->getComponent<ProjectileComponent>().speed = speed;
 			entity->getComponent<ProjectileComponent>().transform->position = Vector2D(width, height);
 		}

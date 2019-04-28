@@ -7,12 +7,15 @@
 #include "AssetManager.h"
 #include <time.h>
 #include "PlayerStats.h"
+#include "GameStats.h"
 
 
 #define EGG true
 #define ROCK false
 
 bool Game::isRunning = false;
+bool Game::cap = true;
+
 
 const int Game::BOX_WIDTH = 120;
 const int Game::BOX_HEIGHT = 80;
@@ -21,7 +24,7 @@ const int Game::WIDTH = 1366;
 const int Game::HEIGHT = 768;
 
 const int Game::minSpeed = 50;
-const int Game::maxSpeed = 150;
+const int Game::maxSpeed = 200;
 
 const int Game::minHeight = -4500;
 const int Game::maxHeight = -800;
@@ -43,7 +46,41 @@ auto& collectedEggs(manager.addEntity());
 auto& brokenEggs(manager.addEntity());
 auto& lives(manager.addEntity());
 auto& anouncer(manager.addEntity());
+auto& fps(manager.addEntity());
 
+
+void Game::init(int nrEggs = 65, int nrRocks = 15) {
+	this->window = nullptr;
+	this->renderer = nullptr;
+	this->timeAnouncer = 0;
+
+	this->healthStages = initStages(6, 75);
+	this->checkedHealthStages = initArray(6);
+	this->cleanseStages = initStages(4, 100);
+	this->checkedCleanseStages = initArray(4);
+
+	this->eggNumber = nrEggs;
+	this->rockNumber = nrRocks;
+}
+
+/*
+	Game constructors
+*/
+Game::Game() { init(); }
+
+Game::Game(int nrEggs) { init(nrEggs); }
+
+Game::Game(int nrEggs, int nrRocks) { init(nrEggs, nrRocks); }
+
+/*
+	Game deconstructor
+*/
+Game::~Game() {
+	delete[] healthStages;
+	delete[] checkedHealthStages;
+	delete[] cleanseStages;
+	delete[] checkedCleanseStages;
+}
 
 
 int* Game::initStages(int number, int stage) {
@@ -62,50 +99,222 @@ int* Game::initArray(int dim) {
 	return temp;
 }
 
-void Game::init(int nrEggs = 65, int nrRocks = 15) {
-	this->window = nullptr;
-	this->renderer = nullptr;
-	this->timeAnouncer = 0;
 
-	this->healthStages = initStages(50, 10);
-	this->checkedHealthStages = initArray(50);
-	this->cleanseStages = initStages(20, 25);
-	this->checkedCleanseStages = initArray(50);
 
-	this->eggNumber = nrEggs;
-	this->rockNumber = nrRocks;
+void Game::initSound() {
+	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
+		cout << "Something wrong with sound";
+
+	assets->addFX("nope", "assets/sound/nope.wav");
+	assets->addFX("collect", "assets/sound/collect.wav");
+	assets->addFX("drop", "assets/sound/drop.wav");
+	assets->addFX("cleanse", "assets/sound/cleanse.wav");
+	assets->addFX("heal", "assets/sound/heal.wav");
+}
+
+void Game::initImages() {
+	assets->addTexture("egg", "assets/egg.png");
+	assets->addTexture("rock", "assets/rock.png");
+	assets->addTexture("player", "assets/player.png");
+
+	assets->addTexture("eggIcon", "assets/collectedEggs.png");
+	assets->addTexture("droppedIcon", "assets/brokenEggs.png");
+
+	assets->addTexture("lives0", "assets/lives0.png");
+	assets->addTexture("lives", "assets/lives.png");
+	assets->addTexture("lives1", "assets/lives1.png");
+	assets->addTexture("lives2", "assets/lives2.png");
+	cout << "images loaded" << endl;
+}
+
+void Game::initHud() {
+	if (TTF_Init() == -1)
+		cout << "Something wrong with font";
+	else {
+		assets->addFont("consolas", "assets/font/consola.ttf", 35);
+
+		SDL_Color black = { 0, 0, 0 };
+		SDL_Color yellow = {255, 255, 0};
+		collectedEggs.addComponent<UILabel>(85, 25, "", "consolas", black);
+
+
+		brokenEggs.addComponent<UILabel>(85, 75, "", "consolas", black);
+
+
+		anouncer.addComponent<UILabel>(WIDTH / 2 - 80, HEIGHT / 2 - 200, "", "consolas", black);
+
+
+		eggsIcon.addComponent<TransformComponent>(10, 10, 58, 47, 1);
+		eggsIcon.addComponent<SpriteComponent>("eggIcon");
+
+
+		droppedIcon.addComponent<TransformComponent>(10, 70, 58, 39, 1);
+		droppedIcon.addComponent<SpriteComponent>("droppedIcon");
+	
+
+		lives.addComponent<TransformComponent>(10, 97, 108, 86, 1);
+		lives.addComponent<SpriteComponent>("lives2");
+	
+
+		fps.addComponent<UILabel>(WIDTH - 50, 10, "", "consolas", yellow);
+		fps.addComponent<TransformComponent>();
+	}
+}
+
+void Game::loadEggs() {
+	for (int i = 0; i < eggNumber; i++) {
+		randWidth = rand() % (WIDTH - 36);
+		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
+		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
+	}
+}
+
+void Game::loadRocks() {
+	for (int i = 0; i < rockNumber; i++) {
+		randWidth = rand() % (WIDTH - 36);
+		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
+		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
+	}
+}
+
+void Game::updateHud(int collected_eggs, int broken_eggs, int FPS, string fontname, stringstream& ss) {
+	ss << collected_eggs;
+	collectedEggs.getComponent<UILabel>().setLabelText(ss.str(), fontname);
+	ss.str(string());
+
+	ss << broken_eggs;
+	brokenEggs.getComponent<UILabel>().setLabelText(ss.str(), fontname);
+	ss.str(string());
+
+	ss << FPS;
+	fps.getComponent<UILabel>().setLabelText(ss.str(), fontname);
+	ss.str(string());
+}
+
+void Game::checkForCollision() {
+	for (auto cc : colliders) {
+		if (cc->tag != "crate") {
+			if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc)) {
+
+				randWidth = rand() % (Game::WIDTH - 35);
+				randHeight = rand() % (Game::maxHeight + 1 - (Game::minHeight - 500)) + Game::minHeight;
+
+				if (cc->tag == "rock") {
+					Mix_PlayChannel(-1, assets->getFX("nope"), 0);
+					cc->transform->position = Vector2D(randWidth, randHeight);
+
+					if (!PlayerStats::gameOver) {
+						PlayerStats::rockHit();
+
+						switch (PlayerStats::Lives()) {
+
+						case 3: lives.getComponent<SpriteComponent>().setTexture("lives2");
+							break;
+
+						case 2: lives.getComponent<SpriteComponent>().setTexture("lives1");
+							break;
+
+						case 1: lives.getComponent<SpriteComponent>().setTexture("lives");
+							break;
+
+						default: lives.getComponent<SpriteComponent>().setTexture("lives0");
+							break;
+						}
+					}
+				}//ends if there is collision with 'rock' entity
+
+				else if (cc->tag == "egg") {
+					Mix_PlayChannel(-1, assets->getFX("collect"), 0);
+					cc->transform->position = Vector2D(randWidth, randHeight);
+					if (!PlayerStats::gameOver) {
+						PlayerStats::eggCollected();
+
+						if (PlayerStats::eggsCollected() % cleanseStages[cleanseStage] == 0 && checkedCleanseStages[cleanseStage] == 0) {
+							Mix_PlayChannel(-1, assets->getFX("cleanse"), 0);
+							PlayerStats::cleanse(1.5f);
+							checkedCleanseStages[cleanseStage] == 1;
+							cleanseStage += 1;
+						}
+
+						//% 75, 150, 225, 300, 375, 425
+						if (PlayerStats::eggsCollected() % healthStages[healthStage] == 0 && checkedHealthStages[healthStage] == 0) {
+							if (PlayerStats::canHeal()) { //if can heal increase health by one				
+								Mix_PlayChannel(-1, assets->getFX("heal"), 0);
+								PlayerStats::heal();
+								if (PlayerStats::Lives() == 3)
+									lives.getComponent<SpriteComponent>().setTexture("lives2");
+								else
+									lives.getComponent<SpriteComponent>().setTexture("lives1");
+
+								checkedHealthStages[healthStage] = 1;
+								healthStage += 1;
+							}
+							else { // if lives == 3, then borkenEggs /= 1.2						
+								PlayerStats::cleanse(1.2f);
+								Mix_PlayChannel(-1, assets->getFX("cleanse"), 0);
+								healthStage += 1;
+							}
+
+						}//ends if collected are divisible by 75, 150, 225, 300, 375, 425
+
+					}//ends if is not game over
+
+				}//ends if there is collision with 'egg' entity
+
+			}//ends check if player collide with other entities
+
+		}//ends exclude player from colliders
+
+	}//ends looping through colliders components
+}
+
+/*Rules for winning / losing the game and show message*/
+void Game::gameOver(int collectedEggs, int brokenEggs, int timeForMessage) {
+	if (PlayerStats::eggsCollected() >= collectedEggs) {
+		ss << "You Won!";
+		anouncer.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
+		ss.str(string());
+
+		if (!PlayerStats::win)
+			timeAnouncer = SDL_GetTicks() + timeForMessage;
+		if (SDL_GetTicks() > timeAnouncer)
+			isRunning = false;
+
+		PlayerStats::win = true;
+	}
+	else if (!PlayerStats::hasLives() || PlayerStats::eggsBroken() >= brokenEggs) {
+		ss << "You Lost!";
+		anouncer.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
+		ss.str(string());
+
+		if (!PlayerStats::gameOver)
+			timeAnouncer = SDL_GetTicks() + timeForMessage;
+		if (SDL_GetTicks() > timeAnouncer)
+			isRunning = false;
+
+		PlayerStats::gameOver = true;
+	}
+}
+
+void Game::joinThread(thread& th) {
+	std::thread::id this_id = th.get_id();
+	if (th.joinable()) {
+		th.join();
+		cout << this_id << " joined" << endl;
+	}
+	else
+		cout << this_id << " has not finished yet!" << endl;
+
 }
 
 
-
-/*
-	Game constructors
-*/
-Game::Game(){
-	init();
-}
-
-Game::Game(int nrEggs) {
-	init(nrEggs);
-}
-
-Game::Game(int nrEggs, int nrRocks) {
-	init(nrEggs, nrRocks);
-}
-
-
-/*
-	Game deconstructor
-*/
-Game::~Game(){
-
-
-}
 
 /*
 	Initialize SDL
 */
 void Game::init(const char* title, int posX, int posY, int with, int height, bool fullscreen) {
+	
+	
 	srand(time(NULL));
 	int flags = 0;
 	if (fullscreen)
@@ -128,79 +337,41 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 		//check if renderer is created
 		if (this->renderer) {
 			cout << "Renderer created ..." << endl;
-			SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 0);
 		}
+
+		imagesThread = thread(&Game::initImages, this);
+		soundThread = thread(&Game::initSound, this);
 
 		//start the game loop
 		Game::isRunning = true;
 
 		bg = new Background();
-
 		bg->load("assets/background.png");
 
-
-		assets->addTexture("eggIcon", "assets/collectedEggs.png");
-		assets->addTexture("droppedIcon", "assets/brokenEggs.png");
-
-		assets->addTexture("lives0", "assets/lives0.png");
-		assets->addTexture("lives", "assets/lives.png");
-		assets->addTexture("lives1", "assets/lives1.png");
-		assets->addTexture("lives2", "assets/lives2.png");
-
-		assets->addTexture("player", "assets/player.png");
-		assets->addTexture("egg", "assets/egg.png");
-		assets->addTexture("rock", "assets/rock.png");
-
-
-		eggsIcon.addComponent<TransformComponent>(10, 10, 58, 47, 1);
-		eggsIcon.addComponent<SpriteComponent>("eggIcon");
-
-		droppedIcon.addComponent<TransformComponent>(10, 70, 58, 39, 1);
-		droppedIcon.addComponent<SpriteComponent>("droppedIcon");
-
-		lives.addComponent<TransformComponent>(10, 97, 108, 86, 1);
-		lives.addComponent<SpriteComponent>("lives2");
-
-		for (int i = 0; i < eggNumber; i++)
-			assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
+		hudThread = thread(&Game::initHud, this);
 		
-		for (int i = 0; i < 15; i++)
-			assets->CreateProjectile(Vector2D(rand() % (WIDTH - 36), rand() % (maxHeight + 1 - minHeight) + minHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
-
-
-		player.addComponent<TransformComponent>(WIDTH / 2.0 - 60.0f, 100.0f, 80, 80, 1.5f);
+		//player entity
+		player.addComponent<TransformComponent>(WIDTH / 2.0 - 60.0f, HEIGHT - 60.0f, BOX_HEIGHT, BOX_HEIGHT, 1.5f);
 		player.addComponent<SpriteComponent>("player");
 		player.addComponent<KeyboardController>();
 		player.addComponent<ColliderComponent>("crate");
 
+		//spawn eggs
+		loadEggs();
+
+		//spawn rocks
+		loadRocks();
 
 	} // ends if sdl is initialized
 	else
 		cout << "SDL not loaded ..." << endl;
+	joinThread(imagesThread);
+	joinThread(soundThread);
+	joinThread(hudThread);
 
-	if (TTF_Init() == -1)
-		cout << "Something wrong with font";
+} //ends Game::init();
 
-
-	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
-		cout << "Something wrong with sound";
-
-
-	assets->addFont("consolas", "assets/font/consola.ttf", 35);
-
-	SDL_Color black = { 0, 0, 0 };
-
-	collectedEggs.addComponent<UILabel>(85, 25, "", "consolas", black);
-	brokenEggs.addComponent<UILabel>(85, 75, "", "consolas", black);
-	anouncer.addComponent<UILabel>(WIDTH / 2 - 80, HEIGHT / 2 - 200, "", "consolas", black);
-
-
-	assets->addFX("nope", "assets/sound/nope.wav");
-	assets->addFX("collect", "assets/sound/collect.wav");
-	assets->addFX("drop", "assets/sound/drop.wav");
-	assets->addFX("cleanse", "assets/sound/cleanse.wav");
-	assets->addFX("heal", "assets/sound/heal.wav");
-}
 
 /*
 	Handle game events
@@ -217,8 +388,9 @@ void Game::handleEvents() {
 	else {
 		if (event.type == SDL_KEYDOWN) {
 			switch (event.key.keysym.sym) {
-			case SDLK_ESCAPE:
-				isRunning = false;
+			case SDLK_RETURN: cap = (!cap);
+				break;
+			case SDLK_ESCAPE : isRunning = false;
 				break;
 			default:
 				break;
@@ -235,110 +407,24 @@ void Game::update() {
 	manager.refresh();
 	manager.update();
 
-	ss << PlayerStats::eggsCollected();
-	collectedEggs.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-	ss.str(string());
-
-	ss << PlayerStats::eggsBroken();
-	brokenEggs.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-	ss.str(string());
-
-	if (PlayerStats::gameOver) {
-		ss << "You Lost!";
-		anouncer.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-		ss.str(string());
-	}
-
-	if (PlayerStats::win) {
-		ss << "You Won!";
-		anouncer.getComponent<UILabel>().setLabelText(ss.str(), "consolas");
-		ss.str(string());
-	}
-
-	int width = rand() % (Game::WIDTH - 35);
-	int height = rand() % (Game::maxHeight + 1 - (Game::minHeight - 500)) + Game::minHeight;
-
-
 	//loops through all colliders and check for collisiobs (Axis aligned bounding box)
-	for (auto cc : colliders)
-		if (cc->tag != "crate")
-			if (Collision::AABB(player.getComponent<ColliderComponent>(), *cc))
-				if (cc->tag == "rock") {
+	checkForCollision();
 
-					Mix_PlayChannel(-1, assets->getFX("nope"), 0);
-					cc->transform->position = Vector2D(width, height);
+	updateHud(PlayerStats::eggsCollected(), PlayerStats::eggsBroken(), Frame::getFPS(), "consolas", ss);
 
-					if (!PlayerStats::gameOver) {
-						PlayerStats::rockHit();
+	/*rules for winning / losing the game */
+	gameOver(500, 75, 3000);
 
-						switch (PlayerStats::Lives()) {
+} //ends Game::update();
 
-						case 3: lives.getComponent<SpriteComponent>().setTexture("lives2");			
-							break;
-
-						case 2: lives.getComponent<SpriteComponent>().setTexture("lives1");				
-							break;
-
-						case 1: lives.getComponent<SpriteComponent>().setTexture("lives");						
-							break;
-
-						default: lives.getComponent<SpriteComponent>().setTexture("lives");
-							break;
-						}
-					}			
-				}//ends if there is collision with 'rock' entity
-
-				else if (cc->tag == "egg") {
-					Mix_PlayChannel(-1, assets->getFX("collect"), 0);
-					cc->transform->position = Vector2D(width, height);
-					if (!PlayerStats::gameOver) {
-						PlayerStats::eggCollected();
-			
-						if (PlayerStats::eggsCollected() % cleanseStages[cleanseStage] == 0 && checkedCleanseStages[cleanseStage] == 0) {
-							Mix_PlayChannel(-1, assets->getFX("cleanse"), 0);
-							PlayerStats::cleanse(2.0f);
-							checkedCleanseStages[cleanseStage] == 1;
-							cleanseStage += 1;
-						}
-
-						//% 75, 150, 225, 300, 375, 425
-						if (PlayerStats::eggsCollected() % healthStages[healthStage] == 0 && checkedHealthStages[healthStage] == 0) {			
-							if (PlayerStats::canHeal()) { //if can heal increase health by one				
-								Mix_PlayChannel(-1, assets->getFX("heal"), 0);
-								PlayerStats::healUp();
-								if (PlayerStats::Lives() == 3) 
-									lives.getComponent<SpriteComponent>().setTexture("lives2");											
-								else 
-									lives.getComponent<SpriteComponent>().setTexture("lives1");
-
-								checkedHealthStages[healthStage] = 1;
-								healthStage += 1;
-							}
-							else { // if lives == 3, then borkenEggs /= 1.2						
-								PlayerStats::cleanse(1.2f);
-								Mix_PlayChannel(-1, assets->getFX("cleanse"), 0);
-								healthStage += 1;
-							}
-										
-						}//ends if collected are divisible by 75, 150, 225, 300, 375, 425
-
-					}//ends if is not game over
-
-				}//ends if there is collision with 'egg' entity
-	
-		
-
-	//game over
-	gameOver();
-}
-
-
-
+/*
+	Display output
+*/
 void Game::render() {
-
 	SDL_RenderClear(this->renderer);
 	bg->draw();
 	manager.draw();
+
 	SDL_RenderPresent(renderer);
 }
 
@@ -355,31 +441,16 @@ void Game::clean() {
 	
 	//quit SDL
 	SDL_Quit();
+	//statsThread.join();
+	if (soundThread.joinable())
+		soundThread.join();
+	if (hudThread.joinable())
+		hudThread.join();
+
+	//imagesThread.join();
 	cout << "Game cleaned ..." << endl;
 }
 
 
-void Game::gameOver() {
-	if (PlayerStats::eggsCollected() >= 500) {
-		//write congrats
-		if (!PlayerStats::win)
-			timeAnouncer = SDL_GetTicks() + 3000;
-		if (SDL_GetTicks() > timeAnouncer)
-			isRunning = false;
-
-		PlayerStats::win = true;
-	}
-
-
-	if (!PlayerStats::hasLives() || PlayerStats::eggsBroken() >= 10000) {
-		//write game over
-		if (!PlayerStats::gameOver)
-			timeAnouncer = SDL_GetTicks() + 3000;
-		if (SDL_GetTicks() > timeAnouncer)
-			isRunning = false;
-
-		PlayerStats::gameOver = true;
-	}
-}
 
 bool Game::running(){ return this->isRunning; }

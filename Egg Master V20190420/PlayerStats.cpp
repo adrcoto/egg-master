@@ -8,13 +8,11 @@
  bool PlayerStats::win = false;
  bool PlayerStats::gameOver = false;
 
- bool PlayerStats::heal = false;
- bool PlayerStats::hasHealed = false;
 
  PlayerStats::PlayerStats(){}
  PlayerStats::~PlayerStats(){}
 
-void PlayerStats::healUp() {
+void PlayerStats::heal() {
 		lives += 1;
 }
 

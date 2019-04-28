@@ -17,12 +17,11 @@ public:
 
 
 	void update() override {
-
-		speed = rand() % (Game::maxSpeed - Game::minSpeed + 1);
-		width = rand() % (Game::WIDTH - 35);
-		height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
-
 		if (transform->position.y >= Game::HEIGHT - 55) {
+			speed = rand() % (Game::maxSpeed - Game::minSpeed + 1);
+			width = rand() % (Game::WIDTH - 35);
+			height = rand() % (Game::maxHeight + 1 - Game::minHeight) + Game::minHeight;
+
 			PlayerStats::eggDropped();
 			Mix_PlayChannel(-1, Game::assets->getFX("drop"), 0);
 			entity->getComponent<CollectableComponment>().speed = speed;

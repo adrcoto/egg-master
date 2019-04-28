@@ -13,6 +13,7 @@ class Entity;
 
 using ComponentID = size_t;
 
+
 inline ComponentID getComponentTypeID() {
 	static ComponentID lastID = 0;
 	return lastID += 1;
@@ -44,12 +45,15 @@ class Entity {
 private:
 
 	bool active = true;
+	bool ready = false;
 	vector<unique_ptr<Component>> components;
 
 	CompoenentArray componentArray;
 	ComponentBitSet componentBitSet;
+	
 
 public:
+
 	void update() {
 		for (auto& c : components) c->update();
 	}
@@ -61,6 +65,7 @@ public:
 	bool isActive() { return this->active; }
 
 	void destroy() { active = false; }
+
 
 	template <typename T> bool hasComponent() const {
 		return componentBitSet(getComponentTypeID<T>());
@@ -89,14 +94,16 @@ public:
 class Manager {
 private:
 	vector<unique_ptr<Entity>> entities;
-
+	
 public:
 	void update() {
-		for (auto& e : entities) e->update();
+		for (auto& e : entities)
+			e->update();
 	}
 
 	void draw() {
-		for (auto& e : entities) e->draw();
+		for (auto& e : entities)
+				e->draw();
 	}
 
 	void refresh() {
@@ -108,7 +115,7 @@ public:
 	Entity& addEntity() {
 		Entity* e = new Entity();
 		unique_ptr<Entity> uPtr{ e };
-		entities.emplace_back(move(uPtr));
+			entities.emplace_back(move(uPtr));
 
 		return *e;
 	}
