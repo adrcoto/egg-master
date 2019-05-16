@@ -1,29 +1,30 @@
 ﻿  AssetManager.cpp
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(73): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ColliderComponent.h(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\CollectableComponent.h(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
-  Background.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
   Collision.cpp
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(73): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\CollectableComponent.h(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ColliderComponent.h(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  Frame.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Frame.cpp(9): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Frame.cpp(30): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
   Game.cpp
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(74): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
+C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\TransformComponent.h(76): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\SpriteComponent.h(52): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(67): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\KeyboardController.h(73): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ColliderComponent.h(35): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ProjectileComponent.h(34): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
 C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\CollectableComponent.h(28): warning C4244: 'argument': conversion from 'int' to 'float', possible loss of data
@@ -58,18 +59,5 @@ C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\ECS\ECS.h(75): warnin
           [
               T=TransformComponent
           ]
-  GameStats.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Main.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Main.cpp(1): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  PlayerStats.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\PlayerStats.cpp(57): warning C4244: '=': conversion from 'float' to 'int', possible loss of data
-  TextureManager.cpp
-C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4067: unexpected tokens following preprocessor directive - expected a newline
-  Timer.cpp
-  Vector2D.cpp
   Generating Code...
-  LINK : C:\Users\Coto\source\repos\egg-master\Debug\Egg Master V20190420.exe not found or not built by the last incremental link; performing full link
-LINK : fatal error LNK1104: cannot open file 'SDL2.lib'
+  Egg Master V20190420.vcxproj -> C:\Users\Coto\source\repos\egg-master\Debug\Egg Master V20190420.exe

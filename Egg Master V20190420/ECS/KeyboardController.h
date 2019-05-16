@@ -13,6 +13,7 @@ public:
 
 	void init() override {
 		transform = &entity->getComponent<TransformComponent>();
+		transform->setLimits(0, Game::WIDTH - Game::BOX_WIDTH, int(Game::HEIGHT - 0.4f * Game::HEIGHT), Game::HEIGHT - Game::BOX_HEIGHT - 30);
 	}
 
 	void update() override {
@@ -61,18 +62,14 @@ public:
 				break;
 			}
 		}
+	}
 
+	int clamp(int value, int min, int max) {
+		if (value < min)
+			return min;
+		else if (value > max)
+			return max;
 
-		if (transform->position.x > Game::WIDTH - Game::BOX_WIDTH)
-			transform->position.x = Game::WIDTH - Game::BOX_WIDTH;
-
-		else if (transform->position.x < 0)
-			transform->position.x = 0;
-
-		if (transform->position.y > Game::HEIGHT - Game::BOX_HEIGHT - 30)
-			transform->position.y = Game::HEIGHT - Game::BOX_HEIGHT - 30;
-
-		else if (transform->position.y < Game::HEIGHT - 0.4f * Game::HEIGHT)
-			transform->position.y = Game::HEIGHT - 0.4f * Game::HEIGHT;
+		return value;
 	}
 };
