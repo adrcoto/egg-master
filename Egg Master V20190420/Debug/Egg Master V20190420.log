@@ -71,4 +71,5 @@ C:\Users\Coto\source\repos\egg-master\Egg Master V20190420\Game.h(2): warning C4
   Timer.cpp
   Vector2D.cpp
   Generating Code...
-  Egg Master V20190420.vcxproj -> C:\Users\Coto\source\repos\egg-master\Debug\Egg Master V20190420.exe
+  LINK : C:\Users\Coto\source\repos\egg-master\Debug\Egg Master V20190420.exe not found or not built by the last incremental link; performing full link
+LINK : fatal error LNK1104: cannot open file 'SDL2.lib'
