@@ -16,15 +16,18 @@ void AssetManager::addTexture(string id, const char* path) {
 }
 
 void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int speed, string id, bool flag) {
-	auto& projectile(manager->addEntity());
-	projectile.addComponent<TransformComponent>(pos.x, pos.y);
-	projectile.addComponent<SpriteComponent>(id);
-	projectile.addComponent<ColliderComponent>(id);
+	Entity* projectile = new Entity();
+
+	projectile->addComponent<TransformComponent>(pos.x, pos.y);
+	projectile->addComponent<SpriteComponent>(id);
+	projectile->addComponent<ColliderComponent>(id);
 
 	if (flag)
-		projectile.addComponent<CollectableComponment>(speed, vel);
+		projectile->addComponent<CollectableComponment>(speed, vel);
 	else
-		projectile.addComponent<ProjectileComponent>(speed, vel);
+		projectile->addComponent<ProjectileComponent>(speed, vel);
+	
+	manager->addEntity(projectile);
 }
 
 

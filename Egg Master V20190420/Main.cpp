@@ -7,9 +7,9 @@ Game* game = nullptr;
 
 #define EGGS 75
 #define ROCKS 17
-const int FPS = 144;
+const int FPS = 60;
 
-Timer fps, update, lock;
+Timer fps, update, timer;
 
 int main(int args, char* argcv[]) {
 	game = new Game(EGGS, ROCKS);
@@ -22,7 +22,7 @@ int main(int args, char* argcv[]) {
 	update.start();
 	fps.start();
 	while (game->running()) {
-		lock.start();
+		timer.start();
 		
 		game->handleEvents();
 		game->update();
@@ -31,12 +31,12 @@ int main(int args, char* argcv[]) {
 		f->incrementFrame();
 
 		if (Game::cap)
-			f->setCap(lock.get_ticks());
+			f->setCap(timer.get_ticks());
 
 		if (f->setInterval(200, update.get_ticks(), fps.get_ticks()))
 			update.start();
 
-		Timer::setDelta(lock);
+		Timer::setDelta(timer);
 
 	}
 	game->clean();

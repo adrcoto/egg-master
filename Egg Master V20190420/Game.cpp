@@ -99,8 +99,6 @@ int* Game::initArray(int dim) {
 	return temp;
 }
 
-
-
 void Game::initSound() {
 	if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048) < 0)
 		cout << "Something wrong with sound";
@@ -111,7 +109,6 @@ void Game::initSound() {
 	assets->addFX("cleanse", "assets/sound/cleanse.wav");
 	assets->addFX("heal", "assets/sound/heal.wav");
 }
-
 
 void Game::initHud() {
 	assets->addTexture("egg", "assets/egg.png");
@@ -135,35 +132,33 @@ void Game::initHud() {
 		SDL_Color yellow = {255, 255, 0};
 		collectedEggs.addComponent<UILabel>(85, 25, "", "consolas", black);
 
-
 		brokenEggs.addComponent<UILabel>(85, 75, "", "consolas", black);
 
-
 		anouncer.addComponent<UILabel>(WIDTH / 2 - 80, HEIGHT / 2 - 200, "", "consolas", black);
-
 
 		eggsIcon.addComponent<TransformComponent>(10, 10, 58, 47, 1);
 		eggsIcon.addComponent<SpriteComponent>("eggIcon");
 
-
 		droppedIcon.addComponent<TransformComponent>(10, 70, 58, 39, 1);
 		droppedIcon.addComponent<SpriteComponent>("droppedIcon");
-	
 
 		lives.addComponent<TransformComponent>(10, 97, 108, 86, 1);
 		lives.addComponent<SpriteComponent>("lives2");
-	
 
 		fps.addComponent<UILabel>(WIDTH - 50, 10, "", "consolas", yellow);
 		fps.addComponent<TransformComponent>();
 	}
 }
 
+
 void Game::loadEggs() {
 	for (int i = 0; i < eggNumber; i++) {
+		if (PlayerStats::gameOver)
+			return;
+	
 		randWidth = rand() % (WIDTH - 36);
 		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
-		assets->CreateProjectile(Vector2D(randWidth, 10), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
+		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
 		this_thread::sleep_for(chrono::milliseconds(Timer::timeToDelay + 10));
 		cout << "Created egg nr " << i + 1 << " -> (" << randWidth << ", " << 100 << "), delay -> " << Timer::timeToDelay + 10 << endl;
 	}
@@ -171,13 +166,17 @@ void Game::loadEggs() {
 
 void Game::loadRocks() {
 	for (int i = 0; i < rockNumber; i++) {
-		randWidth = rand() % (WIDTH - 36);
-		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
-		assets->CreateProjectile(Vector2D(randWidth, 100), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
+		if (PlayerStats::gameOver)
+			return;
+		
+		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
 		this_thread::sleep_for(chrono::milliseconds(Timer::timeToDelay + 10));
 		cout << "Created rock nr " << i + 1 <<" -> (" << randWidth << ", " << 100 << "), delay -> " << Timer::timeToDelay + 10 << endl;
 	}
 }
+
+
+
 
 void Game::updateHud(int collected_eggs, int broken_eggs, int FPS, string fontname, stringstream& ss) {
 	ss << collected_eggs;
@@ -306,7 +305,6 @@ void Game::joinThread(thread& th) {
 	}
 	else
 		cout << this_id << " has not finished yet!" << endl;
-
 }
 
 
@@ -341,7 +339,6 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 			cout << "Renderer created ..." << endl;
 			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 0);
 		}
-
 		
 		soundThread = thread(&Game::initSound, this);
 		hudThread = thread(&Game::initHud, this);
@@ -351,8 +348,6 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 
 		bg = new Background();
 		bg->load("assets/background.png");
-
-	
 		
 		//player entity
 		player.addComponent<TransformComponent>(WIDTH / 2.0 - 60.0f, HEIGHT - 60.0f, BOX_HEIGHT, BOX_HEIGHT, 1.5f);
@@ -377,7 +372,6 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 	joinThread(hudThread);
 
 } //ends Game::init();
-
 
 /*
 	Handle game events
@@ -409,9 +403,11 @@ void Game::handleEvents() {
 	Update game states
 */
 void Game::update() {
-
-	//manager.refresh();
+	
+	m.lock();
+	manager.refresh();
 	manager.update();
+	m.unlock();
 
 	//loops through all colliders and check for collisiobs (Axis aligned bounding box)
 	checkForCollision();

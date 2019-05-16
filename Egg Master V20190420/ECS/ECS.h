@@ -39,6 +39,10 @@ public:
 	virtual void update() {}
 	virtual void draw() {}
 
+	void setReady(bool){}
+	bool getReady(){}
+
+
 	virtual ~Component(){}
 };
 
@@ -51,16 +55,17 @@ private:
 
 	CompoenentArray componentArray;
 	ComponentBitSet componentBitSet;
-	
-
+	 
 public:
 
 	void update() {
-		for (auto& c : components) c->update();
+		for (auto& c : components)
+				c->update();
 	}
 
 	void draw() {
-		for (auto& c : components) c->draw();
+		for (auto& c : components)
+				c->draw();
 	}
 
 	bool isActive() { return this->active; }
@@ -100,7 +105,7 @@ public:
 	void update() {
 		m.lock();
 		for (auto& e : entities)
-			if (e != NULL)
+			if (e != nullptr)
 				e->update();
 		m.unlock();
 	}
@@ -108,16 +113,18 @@ public:
 	void draw() {
 		m.lock();
 		for (auto& e : entities)
-			if (e != NULL)
+			if (e != nullptr)
 				e->draw();
 		m.unlock();
 	}
 
 	void refresh() {
-		entities.erase(remove_if(begin(entities), end(entities), [](const unique_ptr<Entity> & mEntity) {
+	/*	entities.erase(remove_if(begin(entities), end(entities), [](const unique_ptr<Entity> & mEntity) {
 			return !mEntity->isActive();
-		}), end(entities));
+		}), end(entities));*/
 	}
+
+	
 
 	Entity& addEntity() {
 		Entity* e = new Entity();
@@ -125,6 +132,13 @@ public:
 			entities.emplace_back(move(uPtr));
 
 		return *e;
+	}
+	
+	void addEntity(Entity* e) {
+		m.lock();
+		unique_ptr<Entity> uPtr{ e };
+		entities.emplace_back(move(uPtr));
+		m.unlock();
 	}
 };
 

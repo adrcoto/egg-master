@@ -8,7 +8,7 @@
 #include "Frame.h"
 #include <thread>
 #include "Timer.h"
-
+#include <mutex>
 using namespace std;
 
 class AssetManager;
@@ -16,6 +16,7 @@ class ColliderComponent;
 
 class Game {
 private:
+	mutex m;
 	thread soundThread, hudThread, addEggThread, addRockThread;
 	SDL_Window* window;
 
@@ -51,7 +52,6 @@ private:
 
 	void joinThread(thread&);
 public:
-	void initImages();
 	void initHud();
 	void initSound();
 
