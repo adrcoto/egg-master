@@ -21,8 +21,10 @@ void Frame::incrementFrame() {
 }
 
 void Frame::setCap(int time) {
-		if (frameDelay > time) 
-			SDL_Delay(frameDelay - time);
+	if (frameDelay > time) {
+		Timer::timeToDelay = frameDelay - time;
+		SDL_Delay(Timer::timeToDelay);
+	}
 }
 
 bool Frame::setInterval(const int interval, int update, int fps) {

@@ -7,7 +7,7 @@ Game* game = nullptr;
 
 #define EGGS 75
 #define ROCKS 17
-const int FPS = 60;
+const int FPS = 144;
 
 Timer fps, update, lock;
 

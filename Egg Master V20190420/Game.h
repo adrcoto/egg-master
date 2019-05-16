@@ -7,6 +7,7 @@
 #include <sstream>
 #include "Frame.h"
 #include <thread>
+#include "Timer.h"
 
 using namespace std;
 
@@ -15,7 +16,7 @@ class ColliderComponent;
 
 class Game {
 private:
-	thread imagesThread, soundThread, hudThread;
+	thread soundThread, hudThread, addEggThread, addRockThread;
 	SDL_Window* window;
 
 	//number of eggs/rocks
@@ -58,9 +59,6 @@ public:
 	static SDL_Event event;
 	static vector<ColliderComponent*> colliders;
 	static AssetManager* assets;
-
-	
-
 
 
 	static bool cap;

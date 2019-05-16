@@ -20,11 +20,11 @@ void AssetManager::CreateProjectile(Vector2D pos, Vector2D vel, int speed, strin
 	projectile.addComponent<TransformComponent>(pos.x, pos.y);
 	projectile.addComponent<SpriteComponent>(id);
 	projectile.addComponent<ColliderComponent>(id);
+
 	if (flag)
 		projectile.addComponent<CollectableComponment>(speed, vel);
 	else
 		projectile.addComponent<ProjectileComponent>(speed, vel);
-
 }
 
 

@@ -5,6 +5,7 @@
 #include<algorithm>
 #include<bitset>
 #include<array>
+#include <mutex>
 
 using namespace std;
 
@@ -94,16 +95,22 @@ public:
 class Manager {
 private:
 	vector<unique_ptr<Entity>> entities;
-	
+	mutex m;
 public:
 	void update() {
+		m.lock();
 		for (auto& e : entities)
-			e->update();
+			if (e != NULL)
+				e->update();
+		m.unlock();
 	}
 
 	void draw() {
+		m.lock();
 		for (auto& e : entities)
+			if (e != NULL)
 				e->draw();
+		m.unlock();
 	}
 
 	void refresh() {

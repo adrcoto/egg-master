@@ -1,6 +1,7 @@
 #include "Timer.h"
 
 float Timer::delta = 0.0f;
+int Timer::timeToDelay = 0;
 
 Timer::Timer() {
 	//Initialize the variables

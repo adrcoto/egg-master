@@ -112,7 +112,8 @@ void Game::initSound() {
 	assets->addFX("heal", "assets/sound/heal.wav");
 }
 
-void Game::initImages() {
+
+void Game::initHud() {
 	assets->addTexture("egg", "assets/egg.png");
 	assets->addTexture("rock", "assets/rock.png");
 	assets->addTexture("player", "assets/player.png");
@@ -124,10 +125,7 @@ void Game::initImages() {
 	assets->addTexture("lives", "assets/lives.png");
 	assets->addTexture("lives1", "assets/lives1.png");
 	assets->addTexture("lives2", "assets/lives2.png");
-	cout << "images loaded" << endl;
-}
 
-void Game::initHud() {
 	if (TTF_Init() == -1)
 		cout << "Something wrong with font";
 	else {
@@ -165,7 +163,9 @@ void Game::loadEggs() {
 	for (int i = 0; i < eggNumber; i++) {
 		randWidth = rand() % (WIDTH - 36);
 		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
-		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
+		assets->CreateProjectile(Vector2D(randWidth, 10), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "egg", EGG);
+		this_thread::sleep_for(chrono::milliseconds(Timer::timeToDelay + 10));
+		cout << "Created egg nr " << i + 1 << " -> (" << randWidth << ", " << 100 << "), delay -> " << Timer::timeToDelay + 10 << endl;
 	}
 }
 
@@ -173,7 +173,9 @@ void Game::loadRocks() {
 	for (int i = 0; i < rockNumber; i++) {
 		randWidth = rand() % (WIDTH - 36);
 		randHeight = rand() % (maxHeight + 1 - minHeight) + minHeight;
-		assets->CreateProjectile(Vector2D(randWidth, randHeight), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
+		assets->CreateProjectile(Vector2D(randWidth, 100), Vector2D(0, 1), rand() % (maxSpeed - minSpeed + 1) + minSpeed, "rock", ROCK);
+		this_thread::sleep_for(chrono::milliseconds(Timer::timeToDelay + 10));
+		cout << "Created rock nr " << i + 1 <<" -> (" << randWidth << ", " << 100 << "), delay -> " << Timer::timeToDelay + 10 << endl;
 	}
 }
 
@@ -340,8 +342,9 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 			SDL_SetRenderDrawColor(renderer, 255, 255, 0, 0);
 		}
 
-		imagesThread = thread(&Game::initImages, this);
+		
 		soundThread = thread(&Game::initSound, this);
+		hudThread = thread(&Game::initHud, this);
 
 		//start the game loop
 		Game::isRunning = true;
@@ -349,7 +352,7 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 		bg = new Background();
 		bg->load("assets/background.png");
 
-		hudThread = thread(&Game::initHud, this);
+	
 		
 		//player entity
 		player.addComponent<TransformComponent>(WIDTH / 2.0 - 60.0f, HEIGHT - 60.0f, BOX_HEIGHT, BOX_HEIGHT, 1.5f);
@@ -357,16 +360,19 @@ void Game::init(const char* title, int posX, int posY, int with, int height, boo
 		player.addComponent<KeyboardController>();
 		player.addComponent<ColliderComponent>("crate");
 
+		addEggThread = thread(&Game::loadEggs, this);
+		addRockThread = thread(&Game::loadRocks, this);
+
 		//spawn eggs
-		loadEggs();
+		//loadEggs();
 
 		//spawn rocks
-		loadRocks();
+		//loadRocks();
 
 	} // ends if sdl is initialized
 	else
 		cout << "SDL not loaded ..." << endl;
-	joinThread(imagesThread);
+
 	joinThread(soundThread);
 	joinThread(hudThread);
 
@@ -404,7 +410,7 @@ void Game::handleEvents() {
 */
 void Game::update() {
 
-	manager.refresh();
+	//manager.refresh();
 	manager.update();
 
 	//loops through all colliders and check for collisiobs (Axis aligned bounding box)
@@ -442,10 +448,11 @@ void Game::clean() {
 	//quit SDL
 	SDL_Quit();
 	//statsThread.join();
-	if (soundThread.joinable())
-		soundThread.join();
-	if (hudThread.joinable())
-		hudThread.join();
+	joinThread(soundThread);
+	joinThread(hudThread);
+
+	joinThread(addEggThread);
+	joinThread(addRockThread);
 
 	//imagesThread.join();
 	cout << "Game cleaned ..." << endl;
